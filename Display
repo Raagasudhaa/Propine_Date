@@ -1,0 +1,54 @@
+package date;
+
+import java.util.concurrent.TimeUnit;
+
+import org.openqa.selenium.By.ByXPath;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class propineDate {
+
+	/**
+	 * @param args
+	 * @throws InterruptedException 
+	 */
+	public static void main(String[] args) throws InterruptedException {
+		// TODO Auto-generated method stub
+		System.setProperty("webdriver.chrome.driver", "C:\\Users\\Raags\\Downloads\\chromedriver_win32\\chromedriver.exe");
+		WebDriver driver = new ChromeDriver();
+		//implicit wait to handle exception in loading of page
+		driver.manage().timeouts().implicitlyWait(35, TimeUnit.SECONDS);	
+		driver.get("https://vast-dawn-73245.herokuapp.com/");
+		driver.manage().window().maximize();
+		driver.findElement(By.xpath("//input[@name='date']")).click();
+		//input the required date
+		String Date = "12-Oct-2012";
+		String inputDate[] = Date.split("-",5);
+		String inputDay = inputDate[0];
+		String inputMonth = inputDate[1];
+		String inputYear = inputDate[2];
+		driver.findElement(By.xpath("//input[@name='date']")).sendKeys(Date);
+		driver.findElement(By.xpath("//input[@type='submit']")).click();
+		Thread.sleep(10000);
+		String results = driver.findElement(By.xpath("//h3/following-sibling::div")).getText();
+		System.out.println(results);
+		String outputDate[] = results.split(" ",5);
+		String outputMonth = outputDate[1];
+		String outputDay = outputDate[2];
+		String outputYear = outputDate[3];
+		//validation of input & output date
+		try{
+			if(inputDay.equals(outputDay)&&inputMonth.equals(outputMonth)&&inputYear.equals(outputYear)){
+			System.out.println("pass: date matches");
+			}
+			else{
+			System.out.println("fail: date doesnt match");
+			}
+		
+			}	catch(Exception e){
+				System.out.println(e);
+				}
+		driver.quit();
+	}
+}
